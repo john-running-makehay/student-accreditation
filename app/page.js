@@ -1,14 +1,20 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
-      <div className="card w-96 bg-base-100 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">Welcome to Next.js 15!</h2>
-          <p className="text-sm">Tailwind and DaisyUI are configured correctly.</p>
-          <div className="card-actions justify-end">
-            <button className="btn btn-primary">Get Started</button>
-          </div>
-        </div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-background text-foreground">
+      <h1 className="text-4xl font-bold mb-8">
+        Welcome to the Student Accreditation App
+      </h1>
+      <p className="text-lg mb-4">Navigate to a section below:</p>
+      <div className="flex space-x-4">
+        <Link href="/students" className="btn btn-primary">
+          Students
+        </Link>
+        <Link href="/accreditations" className="btn btn-secondary">
+          Accreditations
+        </Link>
       </div>
     </div>
   );
+}
