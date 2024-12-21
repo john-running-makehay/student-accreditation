@@ -23,10 +23,12 @@ export default function StudentsPage() {
   useEffect(() => {
     const loadStudents = async () => {
       const data = await fetchStudents();
-      const cleanedData = data.map((student) => ({
-        ...student,
-        student_accreditations: student.student_accreditations || [],
-      }));
+      const cleanedData = data
+        .map((student) => ({
+          ...student,
+          student_accreditations: student.student_accreditations || [],
+        }))
+        .sort((a, b) => a.name.localeCompare(b.name)); // Sort students alphabetically by name
       setStudents(cleanedData);
     };
 
@@ -190,7 +192,7 @@ export default function StudentsPage() {
   };
 
   return (
-    <div className="p-4">
+    <div>
       <Toaster position="top-center" reverseOrder={false} />
       <h1 className="text-2xl font-bold mb-4">Students</h1>
 

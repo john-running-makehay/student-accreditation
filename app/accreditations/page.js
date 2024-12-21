@@ -104,7 +104,7 @@ export default function AccreditationsPage() {
   return (
     <div>
       <Toaster position="top-center" reverseOrder={false} />
-      <h1 className="text-3xl font-bold mb-4">Accreditations</h1>
+      <h1 className="text-2xl font-bold mb-4">Accreditations</h1>
 
       {/* Add Accreditation Button */}
       <button
