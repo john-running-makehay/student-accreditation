@@ -27,8 +27,14 @@ This repository contains a prototype for a Student Accreditation system. It allo
 
 ## Database Setup
 
-\-- Accreditations Tablecreate table public.accreditations (id uuid not null default gen_random_uuid (),degree text not null,description text null,created_at timestamp null default now(),constraint accreditations_pkey primary key (id),constraint accreditations_degree_key unique (degree));
+Accreditations Table
 
-\-- Student Accreditations Tablecreate table public.student_accreditations (id uuid not null default gen_random_uuid (),student_id uuid null,accreditation_id uuid null,accredited_on date not null,notes text null,created_at timestamp null default now(),constraint student_accreditations_pkey primary key (id),foreign key (accreditation_id) references accreditations (id) on delete cascade,foreign key (student_id) references students (id) on delete cascade);
+create table public.accreditations (id uuid not null default gen_random_uuid (),degree text not null,description text null,created_at timestamp null default now(),constraint accreditations_pkey primary key (id),constraint accreditations_degree_key unique (degree));
 
-\-- Students Tablecreate table public.students (id uuid not null default gen_random_uuid (),name text not null,email text not null,created_at timestamp null default now(),constraint students_pkey primary key (id));
+Student Accreditations Table
+
+create table public.student_accreditations (id uuid not null default gen_random_uuid (),student_id uuid null,accreditation_id uuid null,accredited_on date not null,notes text null,created_at timestamp null default now(),constraint student_accreditations_pkey primary key (id),foreign key (accreditation_id) references accreditations (id) on delete cascade,foreign key (student_id) references students (id) on delete cascade);
+
+Students Table
+
+create table public.students (id uuid not null default gen_random_uuid (),name text not null,email text not null,created_at timestamp null default now(),constraint students_pkey primary key (id));
