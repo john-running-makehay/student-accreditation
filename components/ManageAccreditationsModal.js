@@ -10,9 +10,17 @@ export default function ManageAccreditationsModal({
   onClose,
 }) {
   const [availableAccreditations, setAvailableAccreditations] = useState([]);
+  const [localAccreditations, setLocalAccreditations] = useState(
+    student.student_accreditations || []
+  ); // Local copy of student accreditations
   const [selectedAccreditation, setSelectedAccreditation] = useState("");
   const [accreditedOn, setAccreditedOn] = useState("");
   const [notes, setNotes] = useState("");
+
+  // Sync local accreditations whenever the modal receives new student data
+  useEffect(() => {
+    setLocalAccreditations(student.student_accreditations || []);
+  }, [student]);
 
   // Fetch available accreditations on mount
   useEffect(() => {
@@ -30,6 +38,15 @@ export default function ManageAccreditationsModal({
       return;
     }
 
+    const newAccreditation = {
+      accreditation_id: selectedAccreditation,
+      accredited_on: accreditedOn,
+      notes,
+      accreditations: availableAccreditations.find(
+        (acc) => acc.id === selectedAccreditation
+      ),
+    };
+
     // Call the parent handler for adding accreditation
     onAddAccreditation({
       studentId: student.id,
@@ -37,6 +54,9 @@ export default function ManageAccreditationsModal({
       accreditedOn,
       notes,
     });
+
+    // Update local accreditations state
+    setLocalAccreditations((prev) => [...prev, newAccreditation]);
 
     // Reset form fields
     setSelectedAccreditation("");
@@ -47,6 +67,11 @@ export default function ManageAccreditationsModal({
   const handleRemove = (accreditationId) => {
     // Call the parent handler for removing accreditation
     onRemoveAccreditation({ studentId: student.id, accreditationId });
+
+    // Update local accreditations state
+    setLocalAccreditations((prev) =>
+      prev.filter((acc) => acc.accreditation_id !== accreditationId)
+    );
   };
 
   return (
@@ -56,15 +81,16 @@ export default function ManageAccreditationsModal({
 
         {/* Current Accreditations */}
         <h3 className="text-md mb-2 font-semibold">Current Accreditations</h3>
-        {student.student_accreditations?.length > 0 ? (
+        {localAccreditations.length > 0 ? (
           <ul className="list-disc list-inside mb-4">
-            {student.student_accreditations.map((acc) => (
+            {localAccreditations.map((acc) => (
               <li
                 key={acc.accreditation_id}
                 className="flex justify-between items-center"
               >
                 <span>
-                  {acc.accreditations.degree} (Granted on: {acc.accredited_on})
+                  {acc.accreditations?.degree || "No degree"} (Granted on:{" "}
+                  {acc.accredited_on || "N/A"})
                 </span>
                 <button
                   className="btn btn-sm btn-error"

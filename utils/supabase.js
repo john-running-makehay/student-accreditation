@@ -1,3 +1,4 @@
+//utils/supabase.js
 import { supabase } from "../supabaseClient";
 
 /**

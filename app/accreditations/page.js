@@ -1,3 +1,4 @@
+//app/accreditations/page.js
 "use client";
 import toast, { Toaster } from "react-hot-toast";
 import { useEffect, useState } from "react";
@@ -31,7 +32,10 @@ export default function AccreditationsPage() {
     const addedAccreditation = await addAccreditation(newAccreditation);
     if (addedAccreditation) {
       setAccreditations((prev) => [...prev, addedAccreditation]);
+      toast.success("Accreditation added successfully!");
       setShowAddModal(false);
+    } else {
+      toast.error("Failed to add accreditation.");
     }
   };
 
@@ -45,17 +49,20 @@ export default function AccreditationsPage() {
       setAccreditations((prev) =>
         prev.map((item) => (item.id === updated.id ? updated : item))
       );
+      toast.success("Accreditation updated successfully!");
+      setShowEditModal(false);
+    } else {
+      toast.error("Failed to update accreditation.");
     }
   };
 
-  // Delete a student with confirmation
-  const handleDeleteStudent = async (id) => {
-    // Display a toast asking for confirmation
+  // Delete an accreditation with confirmation
+  const handleDeleteAccreditation = async (id) => {
     const confirmDelete = new Promise((resolve) => {
       toast(
         (t) => (
           <div>
-            <p>Are you sure you want to delete this student?</p>
+            <p>Are you sure you want to delete this accreditation?</p>
             <div className="mt-2 flex justify-end gap-2">
               <button
                 className="btn btn-sm btn-error"
@@ -82,17 +89,15 @@ export default function AccreditationsPage() {
       );
     });
 
-    // Wait for user confirmation
     const confirmed = await confirmDelete;
-    if (!confirmed) return; // Exit if user cancels
+    if (!confirmed) return;
 
-    // Proceed to delete the student
-    const success = await deleteStudent(id);
+    const success = await deleteAccreditation(id);
     if (success) {
-      setStudents((prev) => prev.filter((student) => student.id !== id));
-      toast.success("Student deleted successfully!");
+      setAccreditations((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Accreditation deleted successfully!");
     } else {
-      toast.error("Failed to delete student. Please try again.");
+      toast.error("Failed to delete accreditation.");
     }
   };
 
@@ -136,7 +141,7 @@ export default function AccreditationsPage() {
                   </button>
                   <button
                     className="btn btn-sm btn-error"
-                    onClick={() => handleDeleteAccreditation(item.id)}
+                    onClick={() => handleDeleteAccreditation(item.id)} // Use the correct handler here
                   >
                     Delete
                   </button>

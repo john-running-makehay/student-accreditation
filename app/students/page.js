@@ -60,7 +60,12 @@ export default function StudentsPage() {
     if (editedStudent) {
       setStudents((prev) =>
         prev.map((student) =>
-          student.id === editedStudent.id ? editedStudent : student
+          student.id === editedStudent.id
+            ? {
+                ...editedStudent,
+                student_accreditations: student.student_accreditations, // Preserve accreditations
+              }
+            : student
         )
       );
       toast.success("Student updated successfully!");
